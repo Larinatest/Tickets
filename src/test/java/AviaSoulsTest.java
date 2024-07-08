@@ -1,5 +1,5 @@
 import org.junit.jupiter.api.Test;
-import java.util.Comparator;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class AviaSoulsTest {
@@ -21,10 +21,13 @@ public class AviaSoulsTest {
 
         Ticket[] result = manager.search("NYC", "LA");
 
-        assertEquals(3, result.length);
-        assertEquals(200, result[0].getPrice());
-        assertEquals(300, result[1].getPrice());
-        assertEquals(400, result[2].getPrice());
+        Ticket[] expected = {
+                new Ticket("NYC", "LA", 200, 1400, 1700),
+                new Ticket("NYC", "LA", 300, 1400, 1700),
+                new Ticket("NYC", "LA", 400, 1400, 1700)
+        };
+
+        assertArrayEquals(expected, result);
     }
 
     @Test
@@ -47,10 +50,12 @@ public class AviaSoulsTest {
         TicketTimeComparator comparator = new TicketTimeComparator();
         Ticket[] result = manager.searchAndSortBy("NYC", "LA", comparator);
 
-        assertEquals(3, result.length);
-        assertEquals(400, result[0].getPrice()); // Shortest flight time
-        assertEquals(300, result[1].getPrice());
-        assertEquals(200, result[2].getPrice()); // Longest flight time
+        Ticket[] expected = {
+                new Ticket("NYC", "LA", 400, 1400, 1600), // Shortest flight time
+                new Ticket("NYC", "LA", 300, 1400, 1700),
+                new Ticket("NYC", "LA", 200, 1400, 1800)  // Longest flight time
+        };
+
+        assertArrayEquals(expected, result);
     }
 }
-
